@@ -12,6 +12,20 @@ Aluna: Fernanda Lemes de Souza — 144 6CN (Engenharia de Software)
 
 API em `http://localhost:8080`. Console H2 em `http://localhost:8080/h2-console` (JDBC URL `jdbc:h2:mem:chamadosdb`, usuário `sa`, senha em branco).
 
+## Executar o frontend
+
+Com o backend rodando, em outro terminal:
+
+```
+cd frontend
+npm install
+npm run dev
+```
+
+Frontend em `http://localhost:5173` (React + TypeScript + Vite). As chamadas para `/api` são encaminhadas para `http://localhost:8080`.
+
+Telas, conforme o mapa de telas: Dashboard, Clientes (lista, novo, editar, detalhe com chamados do cliente), Categorias (lista e cadastro), Técnicos (lista e cadastro), Chamados (lista, filtros e novo) e Detalhe do chamado (status, técnico e comentários).
+
 ## Endpoints
 
 | Recurso | Rotas |
