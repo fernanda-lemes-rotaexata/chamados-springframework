@@ -9,9 +9,12 @@ import org.springframework.transaction.annotation.Transactional;
 
 import br.com.sistemas.chamados.dto.ChamadoRequest;
 import br.com.sistemas.chamados.dto.ChamadoResponse;
+import br.com.sistemas.chamados.dto.ComentarioRequest;
+import br.com.sistemas.chamados.dto.ComentarioResponse;
 import br.com.sistemas.chamados.entity.Categoria;
 import br.com.sistemas.chamados.entity.Chamado;
 import br.com.sistemas.chamados.entity.Cliente;
+import br.com.sistemas.chamados.entity.Comentario;
 import br.com.sistemas.chamados.entity.Prioridade;
 import br.com.sistemas.chamados.entity.StatusChamado;
 import br.com.sistemas.chamados.entity.Tecnico;
@@ -20,6 +23,7 @@ import br.com.sistemas.chamados.exception.RegraNegocioException;
 import br.com.sistemas.chamados.repository.CategoriaRepository;
 import br.com.sistemas.chamados.repository.ChamadoRepository;
 import br.com.sistemas.chamados.repository.ClienteRepository;
+import br.com.sistemas.chamados.repository.ComentarioRepository;
 import br.com.sistemas.chamados.repository.TecnicoRepository;
 
 @Service
@@ -29,15 +33,18 @@ public class ChamadoService {
     private final ClienteRepository clienteRepository;
     private final CategoriaRepository categoriaRepository;
     private final TecnicoRepository tecnicoRepository;
+    private final ComentarioRepository comentarioRepository;
 
     public ChamadoService(ChamadoRepository repository,
                           ClienteRepository clienteRepository,
                           CategoriaRepository categoriaRepository,
-                          TecnicoRepository tecnicoRepository) {
+                          TecnicoRepository tecnicoRepository,
+                          ComentarioRepository comentarioRepository) {
         this.repository = repository;
         this.clienteRepository = clienteRepository;
         this.categoriaRepository = categoriaRepository;
         this.tecnicoRepository = tecnicoRepository;
+        this.comentarioRepository = comentarioRepository;
     }
 
     @Transactional
@@ -99,6 +106,13 @@ public class ChamadoService {
             chamado.setDataFechamento(LocalDateTime.now());
         }
         return ChamadoResponse.de(chamado);
+    }
+
+    @Transactional
+    public ComentarioResponse adicionarComentario(Long id, ComentarioRequest dto) {
+        Chamado chamado = buscarEntity(id);
+        Comentario salvo = comentarioRepository.save(new Comentario(dto.texto(), dto.autor(), chamado));
+        return ComentarioResponse.de(salvo);
     }
 
     @Transactional

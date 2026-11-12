@@ -6,6 +6,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.web.PageableDefault;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -22,6 +23,8 @@ import br.com.sistemas.chamados.dto.AlterarStatusRequest;
 import br.com.sistemas.chamados.dto.AtribuirTecnicoRequest;
 import br.com.sistemas.chamados.dto.ChamadoRequest;
 import br.com.sistemas.chamados.dto.ChamadoResponse;
+import br.com.sistemas.chamados.dto.ComentarioRequest;
+import br.com.sistemas.chamados.dto.ComentarioResponse;
 import br.com.sistemas.chamados.entity.Prioridade;
 import br.com.sistemas.chamados.entity.StatusChamado;
 import br.com.sistemas.chamados.service.ChamadoService;
@@ -77,6 +80,13 @@ public class ChamadoController {
         @PathVariable Long id,
         @Valid @RequestBody AlterarStatusRequest dto) {
         return service.alterarStatus(id, dto.status());
+    }
+
+    @PostMapping("/{id}/comentarios")
+    public ResponseEntity<ComentarioResponse> comentar(
+        @PathVariable Long id,
+        @Valid @RequestBody ComentarioRequest dto) {
+        return ResponseEntity.status(HttpStatus.CREATED).body(service.adicionarComentario(id, dto));
     }
 
     @DeleteMapping("/{id}")
